@@ -13,18 +13,19 @@ import com.getcapacitor.JSObject;
 public class OnboardingPlugin extends Plugin {
 
     private static final int ONBOARDING_REQUEST_CODE = 1111;
-    private PluginCall savedCall;  // Save the PluginCall for later use
+    private PluginCall savedCall;
 
     @PluginMethod
     public void triggerOnboardingSDK(PluginCall call) {
-        this.savedCall = call;  // Save the call
+        this.savedCall = call; // Save the call
+         Log.d("OnboardingPlugin", "triggerOnboardingSDK called");
         Context context = getContext();
         
-        // Check if context is valid before creating an intent
         if (context != null) {
             Intent intent = new Intent(context, HostActivity.class); // Ensure this is recognized
             getActivity().startActivityForResult(intent, ONBOARDING_REQUEST_CODE);
         } else {
+            Log.e("OnboardingPlugin", "Context is null");
             savedCall.reject("Context is null; failed to start onboarding SDK.");
         }
     }
@@ -45,7 +46,7 @@ public class OnboardingPlugin extends Plugin {
             } else {
                 savedCall.reject("Onboarding canceled or failed.");
             }
-            savedCall = null;  // Clear the saved call after handling
+            savedCall = null; // Clear the saved call after handling
         }
     }
 }

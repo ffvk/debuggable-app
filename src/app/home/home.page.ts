@@ -6,8 +6,23 @@ interface OnboardingPluginType {
   triggerOnboardingSDK(): Promise<void>;
 }
 
+// Fallback implementation for web
+const OnboardingPluginWeb: OnboardingPluginType = {
+  async triggerOnboardingSDK() {
+    // Simulate the onboarding process for web
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        console.log('Onboarding completed on web.');
+        resolve();
+      }, 1000);
+    });
+  },
+};
+
 const OnboardingPlugin =
-  registerPlugin<OnboardingPluginType>('OnboardingPlugin');
+  Capacitor.getPlatform() === 'web'
+    ? OnboardingPluginWeb
+    : registerPlugin<OnboardingPluginType>('OnboardingPlugin');
 
 @Component({
   selector: 'app-home',
@@ -18,19 +33,14 @@ export class HomePage {
   constructor(private alertController: AlertController) {}
 
   async triggerOnboardingSDK() {
-    if (Capacitor.getPlatform() !== 'web') {
-      try {
-        await OnboardingPlugin.triggerOnboardingSDK();
-        this.showAlert('Success', 'Onboarding SDK triggered successfully!');
-      } catch (error) {
-        console.error('Error triggering onboarding SDK:', error);
-        this.showAlert('Error', 'Failed to trigger onboarding SDK.');
-      }
-    } else {
-      console.warn('Onboarding SDK is not supported on the web platform.');
+    try {
+      await OnboardingPlugin.triggerOnboardingSDK();
+      this.showAlert('Success', 'Onboarding SDK triggered successfully!!');
+    } catch (error: any) {
+      console.error('Error triggering onboarding SDK:', error);
       this.showAlert(
-        'Warning',
-        'Onboarding SDK is not supported on the web platform.',
+        'Error',
+        `Failed to trigger onboarding SDK: ${error.message || error}`,
       );
     }
   }
