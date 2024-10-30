@@ -19,10 +19,14 @@ const OnboardingPluginWeb: OnboardingPluginType = {
   },
 };
 
-const OnboardingPlugin =
-  Capacitor.getPlatform() === 'web'
-    ? OnboardingPluginWeb
-    : registerPlugin<OnboardingPluginType>('OnboardingPlugin');
+// const OnboardingPlugin =
+//   Capacitor.getPlatform() === 'web'
+//     ? OnboardingPluginWeb
+//     : registerPlugin<OnboardingPluginType>('OnboardingPlugin');
+
+const OnboardingPlugin = Capacitor.isNativePlatform()
+  ? registerPlugin<OnboardingPluginType>('OnboardingPlugin')
+  : OnboardingPluginWeb;
 
 @Component({
   selector: 'app-home',
