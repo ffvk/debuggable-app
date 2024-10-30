@@ -18,14 +18,14 @@ public class OnboardingPlugin extends Plugin {
     @PluginMethod
     public void triggerOnboardingSDK(PluginCall call) {
         this.savedCall = call; // Save the call
-         Log.d("OnboardingPlugin", "triggerOnboardingSDK called");
+        //  Log.d("OnboardingPlugin", "triggerOnboardingSDK called");
         Context context = getContext();
         
         if (context != null) {
             Intent intent = new Intent(context, HostActivity.class); // Ensure this is recognized
             getActivity().startActivityForResult(intent, ONBOARDING_REQUEST_CODE);
         } else {
-            Log.e("OnboardingPlugin", "Context is null");
+            // Log.e("OnboardingPlugin", "Context is null");
             savedCall.reject("Context is null; failed to start onboarding SDK.");
         }
     }

@@ -38,10 +38,7 @@ export class HomePage {
       this.showAlert('Success', 'Onboarding SDK triggered successfully!!');
     } catch (error: any) {
       console.error('Error triggering onboarding SDK:', error);
-      this.showAlert(
-        'Error',
-        `Failed to trigger onboarding SDK: ${error.message || error}`,
-      );
+      this.showAlert('Error', ` ${error.message || error}`);
     }
   }
 
